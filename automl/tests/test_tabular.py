@@ -9,14 +9,15 @@ from automl.tabular import TabularAutoML
 
 
 class TabularAutoMLTestCase(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = DATA_DIR / "titanic"
-        self.train_data_dir = self.data_dir / "train.csv"
-        self.index = "PassengerId"
-        self.target = "Survived"
-        self.task = "classification"
+    @classmethod
+    def setUpClass(cls):
+        cls.data_dir = DATA_DIR / "titanic"
+        cls.train_data_dir = cls.data_dir / "train.csv"
+        cls.index = "PassengerId"
+        cls.target = "Survived"
+        cls.task = "classification"
 
-        print(f"index_col {self.index}")
+        print(f"index_col {cls.index}")
 
     def test_basic(self):
         with self.assertRaises(TypeError):
