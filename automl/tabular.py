@@ -27,9 +27,9 @@ class TabularAutoML(object):
     def _validate_file_path(self, file_path):
         if not isinstance(file_path, Path):
             raise ValueError("`data_file_path` must be a `pathlib.Path` object")
-        elif not file_path.exists():
+        if not file_path.exists():
             raise ValueError("File not found!")
-        elif file_path.suffix not in self.SUPPORTED_FILE_FORMATS:
+        if file_path.suffix not in self.SUPPORTED_FILE_FORMATS:
             raise ValueError("Unsupported file format!")
         return file_path
 
