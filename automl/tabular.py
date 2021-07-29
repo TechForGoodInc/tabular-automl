@@ -2,10 +2,6 @@ from pathlib import Path
 
 import pandas as pd
 
-# constants
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-
 
 class TabularAutoML:
     """
@@ -92,24 +88,3 @@ class TabularAutoML:
         # run the experiment
         best_model = self.compare_models(**compare_models__config)
         return best_model
-
-
-if __name__ == "__main__":
-    # list all file paths in DATA_DIR and its subdirectories
-    for file_path in DATA_DIR.rglob("*"):
-        print(file_path)
-
-    data_file_path = input("Enter a path to the dataset: ")
-    index_col = input("Enter the index column: ")
-    target_col = input("Enter the index column: ")
-    task_type = input("Choose a task type: ")
-
-    automl = TabularAutoML(
-        data_file_path, index_col=index_col, target_col=target_col, task_type=task_type
-    )
-    config = {
-        "sampling": dict(sample_frac=0.01),
-        "setup": dict(silent=True),
-        "compare_models": {},
-    }
-    automl.get_best_model(config)
