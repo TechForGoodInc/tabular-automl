@@ -11,12 +11,12 @@ from automl.tabular import TabularAutoML
 class TabularAutoMLTestCase(unittest.TestCase):
     def setUp(self):
         self.data_dir = DATA_DIR / "titanic"
-        self.train_data = self.data_dir / "train.csv"
-        self.index_col = "PassengerId"
-        self.target_col = "Survived"
-        self.task_type = "classification"
+        self.train_data_dir = self.data_dir / "train.csv"
+        self.index = "PassengerId"
+        self.target = "Survived"
+        self.task = "classification"
 
-        print(f"index_col {self.index_col}")
+        print(f"index_col {self.index}")
 
     def test_basic(self):
         with self.assertRaises(TypeError):
@@ -38,48 +38,48 @@ class TabularAutoMLTestCase(unittest.TestCase):
     def test_get_module(self):
         with self.assertRaises(ValueError):
             TabularAutoML(
-                self.train_data,
-                target_col=self.target_col
+                self.train_data_dir,
+                target_col=self.target
             )
 
         with self.assertRaises(ValueError):
             TabularAutoML(
-                self.train_data,
-                target_col=self.target_col,
+                self.train_data_dir,
+                target_col=self.target,
                 task_type="unknown"
             )
 
     def test_get_data(self):
         with self.assertRaises(ValueError):
             TabularAutoML(
-                self.train_data,
+                self.train_data_dir,
                 index_col="unknown",
-                target_col=self.target_col,
-                task_type=self.task_type
+                target_col=self.target,
+                task_type=self.task
             )
         
         with self.assertRaises(ValueError):
             TabularAutoML(
-                self.train_data,
-                index_col=self.index_col,
+                self.train_data_dir,
+                index_col=self.index,
                 target_col="unknown",
-                task_type=self.task_type
+                task_type=self.task
             )
 
         automl = TabularAutoML(
-            self.train_data,
-            index_col=self.index_col,
-            target_col=self.target_col,
-            task_type=self.task_type
+            self.train_data_dir,
+            index_col=self.index,
+            target_col=self.target,
+            task_type=self.task
         )
         self.assertTrue(isinstance(automl.data, pd.DataFrame))
 
     def test_get_sample(self):
         automl = TabularAutoML(
-            self.train_data,
-            index_col=self.index_col,
-            target_col=self.target_col,
-            task_type=self.task_type
+            self.train_data_dir,
+            index_col=self.index,
+            target_col=self.target,
+            task_type=self.task
         )
         sample= automl._get_sample()
         self.assertEqual(sample.shape, (89,12))
@@ -92,10 +92,10 @@ class TabularAutoMLTestCase(unittest.TestCase):
 
     def test_get_best_model(self):
         automl = TabularAutoML(
-            self.train_data,
-            index_col=self.index_col,
-            target_col=self.target_col,
-            task_type=self.task_type
+            self.train_data_dir,
+            index_col=self.index,
+            target_col=self.target,
+            task_type=self.task
         )
         config = {"setup": dict(silent=True)}
         automl.get_best_model(config)
