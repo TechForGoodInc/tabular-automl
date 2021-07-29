@@ -49,7 +49,7 @@ class TabularAutoML:
 
         # check if the index column is in the data
         try:
-            index = list(set(data.columns) & set([self.index_col]))
+            index = list(set(data.columns) & {self.index_col})
             data.set_index(index)
         except KeyError:
             if index_col is not None:
