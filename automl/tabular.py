@@ -18,7 +18,8 @@ class TabularAutoML:
         self.data, self.target_col = self.get_data(
             self.data_file_path, index_col=index_col, target_col=target_col
         )
-        self._module = self._get_module(task_type)
+        self.task_type = str(task_type)
+        self._module = self._get_module()
 
     def _validate_file_path(self, file_path):
         if not isinstance(file_path, Path):
@@ -29,15 +30,15 @@ class TabularAutoML:
             raise ValueError("Unsupported file format!")
         return file_path
 
-    def _get_module(self, task_type):
+    def _get_module(self):
         try:
             import importlib
 
-            module = importlib.import_module(f"pycaret.{task_type}")
+            module = importlib.import_module(f"pycaret.{self.task_type}")
             return module
-        except ImportError:
-            if task_type not in self.TASK_TYPES:
-                raise ValueError(f"Unsupported task type: {task_type}")
+        except ModuleNotFoundError:
+            if self.task_type not in self.TASK_TYPES:
+                raise ValueError(f"Unsupported task type: {self.task_type}")
 
     def get_data(self, file_path, index_col=None, target_col=None):
         # TODO: handle other file extensions
