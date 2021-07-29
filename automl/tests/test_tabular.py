@@ -16,7 +16,7 @@ class TabularAutoMLTestCase(unittest.TestCase):
         self.target_col = "Survived"
         self.task_type = "classification"
 
-        print(f"DATA_DIR: {DATA_DIR}")
+        print(f"DATA_DIR contents: {list(DATA_DIR.rglob('*'))}")
 
     def test_basic(self):
         with self.assertRaises(TypeError):
