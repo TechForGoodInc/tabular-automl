@@ -110,6 +110,6 @@ if __name__ == "__main__":
     config = {
         "sampling": dict(sample_frac=0.01),
         "setup": dict(silent=True),
-        "compare_models": dict(),
+        "compare_models": {},
     }
     automl.get_best_model(config)
