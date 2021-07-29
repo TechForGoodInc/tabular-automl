@@ -6,11 +6,13 @@ import pandas as pd
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
+
 class TabularAutoML(object):
     """
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
     """
+
     TASK_TYPES = ("regression", "classification")
     SUPPORTED_FILE_FORMATS = (".csv",)
 
@@ -34,6 +36,7 @@ class TabularAutoML(object):
     def _get_module(self, task_type):
         try:
             import importlib
+
             module = importlib.import_module(f"pycaret.{task_type}")
             return module
         except ImportError:
@@ -59,15 +62,13 @@ class TabularAutoML(object):
         return data, target_col
 
     def _get_sample(self, sample_frac=0.1, random_state=42):
-        sample_data = self.data.sample(
-            frac=sample_frac, random_state=random_state
-        )
+        sample_data = self.data.sample(frac=sample_frac, random_state=random_state)
         print(f"Sample shape: {sample_data.shape}")
         return sample_data
 
     def setup(self, data, target, **kwargs):
         return self._module.setup(data, target=target, **kwargs)
-    
+
     def compare_models(self, **kwargs):
         return self._module.compare_models(**kwargs)
 
@@ -86,7 +87,7 @@ class TabularAutoML(object):
 
         # initialize the experiment
         setup__config.update(dict(data=data, target=self.target_col))
-        self.setup(**setup__config)        
+        self.setup(**setup__config)
 
         # run the experiment
         best_model = self.compare_models(**compare_models__config)
@@ -95,7 +96,7 @@ class TabularAutoML(object):
 
 if __name__ == "__main__":
     # list all file paths in DATA_DIR and its subdirectories
-    for file_path in DATA_DIR.rglob('*'):
+    for file_path in DATA_DIR.rglob("*"):
         print(file_path)
 
     data_file_path = input("Enter a path to the dataset: ")
@@ -104,14 +105,11 @@ if __name__ == "__main__":
     task_type = input("Choose a task type: ")
 
     automl = TabularAutoML(
-        data_file_path,
-        index_col=index_col,
-        target_col=target_col,
-        task_type=task_type
+        data_file_path, index_col=index_col, target_col=target_col, task_type=task_type
     )
     config = {
         "sampling": dict(sample_frac=0.01),
         "setup": dict(silent=True),
-        "compare_models": dict()
+        "compare_models": dict(),
     }
     automl.get_best_model(config)
