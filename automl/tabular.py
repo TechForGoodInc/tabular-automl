@@ -16,7 +16,7 @@ class TabularAutoML:
         # TODO: handle multiple file paths
         self.data_file_path = self._validate_file_path(data_file_path)
         self.target_col =  target_col
-        self.data, self.target_col = self.get_data(
+        self.data = self.get_data(
             self.data_file_path, index_col=index_col, target_col=self.target_col
         )
         self.task_type = str(task_type)
@@ -32,26 +32,30 @@ class TabularAutoML:
         return file_path
 
     def _get_module(self):
-        try:
-            import importlib
+        if self.task_type is not None:
+            try:
+                import importlib
 
-            module = importlib.import_module(f"pycaret.{self.task_type}")
-            return module
-        except ModuleNotFoundError:
-            if self.task_type not in self.TASK_TYPES:
-                raise ValueError(f"Unsupported task type: {self.task_type}")
+                module = importlib.import_module(f"pycaret.{self.task_type}")
+                return module
+            except ModuleNotFoundError:
+                if self.task_type not in self.TASK_TYPES:
+                    raise ValueError(f"Unsupported task type: {self.task_type}")
+        else:
+            raise ValueError("Task type must be set!")
 
     def get_data(self, file_path, index_col=None, target_col=None):
         # TODO: handle other file extensions
         data = pd.read_csv(file_path)
 
         # check if the index column is in the data
-        try:
-            index = list(set(data.columns) & {index_col})
-            data.set_index(index)
-        except KeyError:
-            if index_col is not None:
-                raise ValueError(f"{index_col} not found in data")
+        if index_col is not None:
+            try:
+                index = list(set(data.columns) & {index_col})
+                data.set_index(index)
+            except KeyError:
+                if index_col is not None:
+                    raise ValueError(f"{index_col} not found in data")
 
         # check if the target column is in the data
         if target_col not in data.columns:
