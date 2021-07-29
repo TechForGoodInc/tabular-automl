@@ -52,7 +52,7 @@ class TabularAutoML:
         if index_col is not None:
             try:
                 index = list(set(data.columns) & {index_col})
-                data.set_index(index)
+                data.set_index(index[0])
             except KeyError:
                 if index_col is not None:
                     raise ValueError(f"{index_col} not found in data")
