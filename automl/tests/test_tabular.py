@@ -4,7 +4,7 @@ import unittest
 class TabularAutoMLTestCase(unittest.TestCase):
     def test_validate_file_path(self):
         pass
-    
+
     def test_get_module(self):
         pass
 
