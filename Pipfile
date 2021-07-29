@@ -9,5 +9,7 @@ pycaret = "*"
 [dev-packages]
 coverage = "*"
 coveralls = "*"
+build = "*"
+twine = "*"
 
 [requires]
