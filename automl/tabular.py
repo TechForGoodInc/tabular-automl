@@ -15,8 +15,9 @@ class TabularAutoML:
     def __init__(self, data_file_path, index_col=None, target_col=None, task_type=None):
         # TODO: handle multiple file paths
         self.data_file_path = self._validate_file_path(data_file_path)
+        self.target_col =  target_col
         self.data, self.target_col = self.get_data(
-            self.data_file_path, index_col=index_col, target_col=target_col
+            self.data_file_path, index_col=index_col, target_col=self.target_col
         )
         self.task_type = str(task_type)
         self._module = self._get_module()
@@ -56,7 +57,7 @@ class TabularAutoML:
         if target_col not in data.columns:
             raise ValueError(f"{target_col} not found in data")
 
-        return data, target_col
+        return data
 
     def _get_sample(self, sample_frac=0.1, random_state=42):
         sample_data = self.data.sample(frac=sample_frac, random_state=random_state)
