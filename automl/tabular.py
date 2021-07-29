@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
 
-class TabularAutoML(object):
+class TabularAutoML:
     """
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
