@@ -12,7 +12,7 @@ class TabularAutoML(object):
     use tabular data
     """
     TASK_TYPES = ("regression", "classification")
-    SUPPORTED_FILE_FORMATS = ("csv",)
+    SUPPORTED_FILE_FORMATS = (".csv",)
 
     def __init__(self, data_file_path, index_col=None, target_col=None, task_type=None):
         # TODO: handle multiple file paths
