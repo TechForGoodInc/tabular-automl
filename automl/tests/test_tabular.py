@@ -17,8 +17,6 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.target = "Survived"
         cls.task = "classification"
 
-        print(f"index_col {cls.index}")
-
     def test_basic(self):
         with self.assertRaises(TypeError):
             TabularAutoML()
