@@ -12,19 +12,19 @@ class TabularAutoML:
     TASK_TYPES = ("regression", "classification")
     SUPPORTED_FILE_FORMATS = (".csv",)
 
-    def __init__(self, data_file_path, index_col=None, target_col=None, task_type=None):
+    def __init__(self, train_data_path, index_col=None, target_col=None, task_type=None):
         # TODO: handle multiple file paths
-        self.data_file_path = self._validate_file_path(data_file_path)
+        self.train_data_path = self._validate_file_path(train_data_path)
         self.target_col =  target_col
-        self.data = self.get_data(
-            self.data_file_path, index_col=index_col, target_col=self.target_col
+        self.train_data = self.get_data(
+            self.train_data_path, index_col=index_col, target_col=self.target_col
         )
         self.task_type = str(task_type)
         self._module = self._get_module()
 
     def _validate_file_path(self, file_path):
         if not isinstance(file_path, Path):
-            raise ValueError("`data_file_path` must be a `pathlib.Path` object")
+            raise ValueError("`file_path` must be a `pathlib.Path` object")
         if not file_path.exists():
             raise ValueError("File not found!")
         if file_path.suffix not in self.SUPPORTED_FILE_FORMATS:
@@ -52,7 +52,6 @@ class TabularAutoML:
         if index_col is not None:
             try:
                 index = list(set(data.columns) & {index_col})
-                print(f"data.columns: {data.columns}, index: {index_col}")
                 data.set_index(index)
             except KeyError:
                 if index_col is not None:
@@ -65,7 +64,7 @@ class TabularAutoML:
         return data
 
     def _get_sample(self, sample_frac=0.1, random_state=42):
-        sample_data = self.data.sample(frac=sample_frac, random_state=random_state)
+        sample_data = self.train_data.sample(frac=sample_frac, random_state=random_state)
         print(f"Sample shape: {sample_data.shape}")
         return sample_data
 
@@ -83,10 +82,10 @@ class TabularAutoML:
         compare_models__config = config.get("compare_models", {})
 
         # get a sample if the data is large
-        if self.data.shape[0] > 10000:
+        if self.train_data.shape[0] > 10000:
             data = self._get_sample(**sampling__config)
         else:
-            data = self.data
+            data = self.train_data
 
         # initialize the experiment
         setup__config.update(dict(data=data, target=self.target_col))
