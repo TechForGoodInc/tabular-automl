@@ -12,10 +12,12 @@ class TabularAutoML:
     TASK_TYPES = ("regression", "classification")
     SUPPORTED_FILE_FORMATS = (".csv",)
 
-    def __init__(self, train_data_path, index_col=None, target_col=None, task_type=None):
+    def __init__(
+        self, train_data_path, index_col=None, target_col=None, task_type=None
+    ):
         # TODO: handle multiple file paths
         self.train_data_path = self._validate_file_path(train_data_path)
-        self.target_col =  target_col
+        self.target_col = target_col
         self.train_data = self.get_data(
             self.train_data_path, index_col=index_col, target_col=self.target_col
         )
@@ -64,7 +66,9 @@ class TabularAutoML:
         return data
 
     def _get_sample(self, sample_frac=0.1, random_state=42):
-        sample_data = self.train_data.sample(frac=sample_frac, random_state=random_state)
+        sample_data = self.train_data.sample(
+            frac=sample_frac, random_state=random_state
+        )
         print(f"Sample shape: {sample_data.shape}")
         return sample_data
 
