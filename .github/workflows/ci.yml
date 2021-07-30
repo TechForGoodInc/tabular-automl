@@ -20,8 +20,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-        lfs: true
-    - name: Checkout LFS objects
+    - name: Pull LFS objects
       run: git lfs pull
     - name: Install Dependencies
       run: |
