@@ -11,5 +11,6 @@ coverage = "*"
 coveralls = "*"
 build = "*"
 twine = "*"
+kaggle = "*"
 
 [requires]
