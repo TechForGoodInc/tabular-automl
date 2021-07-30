@@ -47,7 +47,7 @@ class TabularAutoML:
             raise ValueError("Task type must be set!")
 
     @staticmethod
-    def get_data(self, file_path, index_col=None, target_col=None):
+    def get_data(file_path, index_col=None, target_col=None):
         # TODO: handle other file extensions
         data = pd.read_csv(file_path)
 
