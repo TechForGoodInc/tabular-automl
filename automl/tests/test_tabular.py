@@ -16,10 +16,6 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.target_col = "Survived"
         cls.task_type = "classification"
 
-    def test_basic(self):
-        with self.assertRaises(TypeError):
-            TabularAutoML()
-
     def test_validate_file_path(self):
         # not a Path
         with self.assertRaises(ValueError):
