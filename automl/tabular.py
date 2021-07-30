@@ -66,7 +66,7 @@ class TabularAutoML:
 
         return data
 
-    def _get_sample(self, sample_frac=0.1, random_state=42):
+    def get_sample(self, sample_frac=0.1, random_state=42):
         sample_data = self.train_data.sample(
             frac=sample_frac, random_state=random_state
         )
@@ -88,7 +88,7 @@ class TabularAutoML:
 
         # get a sample if the data is large
         if self.train_data.shape[0] > 10000:
-            data = self._get_sample(**sampling__config)
+            data = self.get_sample(**sampling__config)
         else:
             data = self.train_data
 

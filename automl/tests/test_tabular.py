@@ -67,14 +67,14 @@ class TabularAutoMLTestCase(unittest.TestCase):
         )
         self.assertTrue(isinstance(automl.train_data, pd.DataFrame))
 
-    def test_get_sample(self):
+    def testget_sample(self):
         automl = TabularAutoML(
             self.train_data_path,
             index_col=self.index_col,
             target_col=self.target_col,
             task_type=self.task_type,
         )
-        sample = automl._get_sample()
+        sample = automl.get_sample()
         self.assertEqual(sample.shape, (89, 12))
 
     def test_setup(self):
