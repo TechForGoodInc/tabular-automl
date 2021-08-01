@@ -77,9 +77,6 @@ class TabularAutoMLTestCase(unittest.TestCase):
         sample = automl.get_sample()
         self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
 
-        sample = automl.get_sample(sample_frac="auto")
-        self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
-
     def test_setup(self):
         self.assertTrue(True)
 

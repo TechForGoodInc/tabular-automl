@@ -70,7 +70,7 @@ class TabularAutoML:
 
         return data
 
-    def get_sample(self, sample_frac=0.5, random_state=42):
+    def get_sample(self, sample_frac="auto", random_state=42):
         train_data_rows = self.train_data.shape[0]
 
         if sample_frac == "auto":
