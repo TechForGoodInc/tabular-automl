@@ -15,7 +15,8 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.target_col = "Survived"
         cls.task_type = "classification"
 
-    def get_sample_frac(self, data, sample):
+    @staticmethod
+    def get_sample_frac(data, sample):
         return sample.shape[0] / data.shape[0]
 
     def test_validate_file_path(self):
