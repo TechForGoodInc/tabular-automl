@@ -77,12 +77,6 @@ class TabularAutoMLTestCase(unittest.TestCase):
         sample = automl.get_sample()
         self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
 
-    def test_setup(self):
-        self.assertTrue(True)
-
-    def test_compare_models(self):
-        self.assertTrue(True)
-
     def test_get_best_model(self):
         automl = TabularAutoML(
             self.train_data_path,
