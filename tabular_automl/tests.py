@@ -1,10 +1,9 @@
 import unittest
-from pathlib import Path
 
 import pandas as pd
 
-from automl.settings import DATA_DIR
-from automl.tabular import TabularAutoML
+from .settings import DATA_DIR
+from .tabular_automl import TabularAutoML
 
 
 class TabularAutoMLTestCase(unittest.TestCase):
@@ -15,6 +14,10 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.index_col = "PassengerId"
         cls.target_col = "Survived"
         cls.task_type = "classification"
+
+    @staticmethod
+    def get_sample_frac(data, sample):
+        return sample.shape[0] / data.shape[0]
 
     def test_validate_file_path(self):
         # not a Path
@@ -63,21 +66,17 @@ class TabularAutoMLTestCase(unittest.TestCase):
         )
         self.assertTrue(isinstance(automl.train_data, pd.DataFrame))
 
-    def testget_sample(self):
+    def test_get_sample(self):
         automl = TabularAutoML(
             self.train_data_path,
             index_col=self.index_col,
             target_col=self.target_col,
             task_type=self.task_type,
         )
+
+        data = automl.train_data
         sample = automl.get_sample()
-        self.assertEqual(sample.shape, (89, 12))
-
-    def test_setup(self):
-        pass
-
-    def test_compare_models(self):
-        pass
+        self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
 
     def test_get_best_model(self):
         automl = TabularAutoML(
@@ -88,7 +87,3 @@ class TabularAutoMLTestCase(unittest.TestCase):
         )
         config = {"setup": dict(silent=True)}
         automl.get_best_model(config)
-
-
-if __name__ == "__main__":
-    unittest.main()
