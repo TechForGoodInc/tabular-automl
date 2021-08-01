@@ -14,7 +14,7 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.index_col = "PassengerId"
         cls.target_col = "Survived"
         cls.task_type = "classification"
-    
+
     def get_sample_frac(self, data, sample):
         return sample.shape[0] / data.shape[0]
 
@@ -72,19 +72,13 @@ class TabularAutoMLTestCase(unittest.TestCase):
             target_col=self.target_col,
             task_type=self.task_type,
         )
-        
-        data =  automl.train_data
+
+        data = automl.train_data
         sample = automl.get_sample()
-        self.assertGreaterEqual(
-            self.get_sample_frac(data, sample=sample),
-            0.5
-        )
+        self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
 
         sample = automl.get_sample(sample_frac="auto")
-        self.assertGreaterEqual(
-            self.get_sample_frac(data, sample=sample),
-            0.5
-        )
+        self.assertGreaterEqual(self.get_sample_frac(data, sample=sample), 0.5)
 
     def test_setup(self):
         self.assertTrue(True)

@@ -8,7 +8,7 @@ class TabularAutoML:
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
     """
-    
+
     LARGE_DATASET_ROWS = int(1e5)
     TASK_TYPES = ("regression", "classification")
     SUPPORTED_FILE_FORMATS = (".csv",)
@@ -18,7 +18,7 @@ class TabularAutoML:
     ):
         # TODO: handle multiple file paths
         self.train_data_path = train_data_path
-        self.target_col = target_col        
+        self.target_col = target_col
         self.task_type = task_type
 
         # derived attributes
