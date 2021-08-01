@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from automl.settings import DATA_DIR
-from automl.tabular import TabularAutoML
+from .settings import DATA_DIR
+from .tabular_automl import TabularAutoML
 
 
 class TabularAutoMLTestCase(unittest.TestCase):
@@ -71,7 +71,8 @@ class TabularAutoMLTestCase(unittest.TestCase):
             task_type=self.task_type,
         )
         sample = automl.get_sample()
-        self.assertEqual(sample.shape, (89, 12))
+        sample_frac = sample.shape[0] / automl.train_data.shape[0]
+        self.assertGreaterEqual(sample_frac, 0.5)
 
     def test_setup(self):
         pass

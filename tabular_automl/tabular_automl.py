@@ -8,7 +8,8 @@ class TabularAutoML:
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
     """
-
+    
+    LARGE_DATASET_ROWS = int(1e5)
     TASK_TYPES = ("regression", "classification")
     SUPPORTED_FILE_FORMATS = (".csv",)
 
@@ -16,12 +17,14 @@ class TabularAutoML:
         self, train_data_path, index_col=None, target_col=None, task_type=None
     ):
         # TODO: handle multiple file paths
-        self.train_data_path = self._validate_file_path(train_data_path)
-        self.target_col = target_col
+        self.train_data_path = train_data_path
+        self.target_col = target_col        
+        self.task_type = task_type
+
+        # derived attributes
         self.train_data = self.get_data(
             self.train_data_path, index_col=index_col, target_col=self.target_col
         )
-        self.task_type = str(task_type)
         self._module = self._get_module()
 
     def _validate_file_path(self, file_path):
@@ -38,7 +41,7 @@ class TabularAutoML:
             try:
                 import importlib
 
-                module = importlib.import_module(f"pycaret.{self.task_type}")
+                module = importlib.import_module(f"pycaret.{str(self.task_type)}")
                 return module
             except ModuleNotFoundError:
                 if self.task_type not in self.TASK_TYPES:
@@ -46,8 +49,9 @@ class TabularAutoML:
         else:
             raise ValueError("Task type must be set!")
 
-    @staticmethod
-    def get_data(file_path, index_col=None, target_col=None):
+    def get_data(self, file_path, index_col=None, target_col=None):
+        file_path = self._validate_file_path(file_path)
+
         # TODO: handle other file extensions
         data = pd.read_csv(file_path)
 
@@ -66,7 +70,11 @@ class TabularAutoML:
 
         return data
 
-    def get_sample(self, sample_frac=0.1, random_state=42):
+    def get_sample(self, sample_frac=0.5, random_state=42):
+        if sample_frac == "auto":
+            sample_frac = self.LARGE_DATASET_ROWS / self.train_data.shape[0]
+            sample_frac = round(sample_frac, 2)
+
         sample_data = self.train_data.sample(
             frac=sample_frac, random_state=random_state
         )
@@ -87,7 +95,7 @@ class TabularAutoML:
         compare_models__config = config.get("compare_models", {})
 
         # get a sample if the data is large
-        if self.train_data.shape[0] > 10000:
+        if self.train_data.shape[0] > self.LARGE_DATASET_ROWS:
             data = self.get_sample(**sampling__config)
         else:
             data = self.train_data
