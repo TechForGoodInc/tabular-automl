@@ -71,9 +71,14 @@ class TabularAutoML:
         return data
 
     def get_sample(self, sample_frac=0.5, random_state=42):
+        train_data_rows = self.train_data.shape[0]
+
         if sample_frac == "auto":
-            sample_frac = self.LARGE_DATASET_ROWS / self.train_data.shape[0]
-            sample_frac = round(sample_frac, 2)
+            if train_data_rows > self.LARGE_DATASET_ROWS:
+                sample_frac = self.LARGE_DATASET_ROWS / train_data_rows
+                sample_frac = round(sample_frac, 2)
+            else:
+                sample_frac = 0.5
 
         sample_data = self.train_data.sample(
             frac=sample_frac, random_state=random_state

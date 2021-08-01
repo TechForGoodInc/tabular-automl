@@ -14,6 +14,9 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.index_col = "PassengerId"
         cls.target_col = "Survived"
         cls.task_type = "classification"
+    
+    def get_sample_frac(self, data, sample):
+        return sample.shape[0] / data.shape[0]
 
     def test_validate_file_path(self):
         # not a Path
@@ -62,16 +65,26 @@ class TabularAutoMLTestCase(unittest.TestCase):
         )
         self.assertTrue(isinstance(automl.train_data, pd.DataFrame))
 
-    def testget_sample(self):
+    def test_get_sample(self):
         automl = TabularAutoML(
             self.train_data_path,
             index_col=self.index_col,
             target_col=self.target_col,
             task_type=self.task_type,
         )
+        
+        data =  automl.train_data
         sample = automl.get_sample()
-        sample_frac = sample.shape[0] / automl.train_data.shape[0]
-        self.assertGreaterEqual(sample_frac, 0.5)
+        self.assertGreaterEqual(
+            self.get_sample_frac(data, sample=sample),
+            0.5
+        )
+
+        sample = automl.get_sample(sample_frac="auto")
+        self.assertGreaterEqual(
+            self.get_sample_frac(data, sample=sample),
+            0.5
+        )
 
     def test_setup(self):
         self.assertTrue(True)
@@ -88,7 +101,3 @@ class TabularAutoMLTestCase(unittest.TestCase):
         )
         config = {"setup": dict(silent=True)}
         automl.get_best_model(config)
-
-
-if __name__ == "__main__":
-    unittest.main()
