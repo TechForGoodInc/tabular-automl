@@ -7,9 +7,10 @@ class TabularAutoML:
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
     """
-    def __init__(self, train_data, target_col=None, task_type=None):
+    def __init__(self, train_data, test_data=None, target_col=None, task_type=None):
         # TODO: add option for test data
         self.train_data = train_data
+        self.test_data = test_data
         self.target_col = target_col
         self.task_type = task_type
 
@@ -34,6 +35,30 @@ class TabularAutoML:
 
     def compare_models(self, **kwargs):
         return self.pycaret_module.compare_models(**kwargs)
+
+    def create_model(self, **kwargs):
+        return self.pycaret_module.create_model(**kwargs)
+
+    def tune_model(self, **kwargs):
+        return self.pycaret_module.tune_model(**kwargs)
+
+    def plot_model(self, **kwargs):
+        return self.pycaret_module.plot_model(**kwargs)
+
+    def interpret_model(self, **kwargs):
+        return self.pycaret_module.interpret_model(**kwargs)
+
+    def predict_model(self, **kwargs):
+        return self.pycaret_module.predict_model(**kwargs)
+
+    def finalize_model(self, **kwargs):
+        return self.pycaret_module.finalize_model(**kwargs)
+
+    def save_model(self, **kwargs):
+        return self.pycaret_module.save_model(**kwargs)
+
+    def load_model(self, **kwargs):
+        return self.pycaret_module.load_model(**kwargs)
 
     def get_sample(self, sample_frac="auto", random_state=42):
         train_data_rows = self.train_data.shape[0]
@@ -69,7 +94,7 @@ class TabularAutoML:
         if setup__config.get("target") is None:
             setup__config["target"] = self.target_col
         setup = self.setup(**setup__config)
-        # print(setup)
+        print(setup)
 
         # run the experiment
         best_model = self.compare_models(**compare_models__config)
