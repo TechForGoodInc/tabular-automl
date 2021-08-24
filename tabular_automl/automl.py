@@ -100,7 +100,9 @@ class TabularAutoML:
         if setup__config.get("target") is None:
             setup__config["target"] = self.target_col
         setup = self.setup(**setup__config)
-        display(setup)
+
+        for item in setup:
+            display(item)
 
         # run the experiment
         best_model = self.compare_models(**compare_models__config)
