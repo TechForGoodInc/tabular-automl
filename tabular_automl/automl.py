@@ -1,3 +1,7 @@
+import copy
+
+from IPython.display import display
+
 from . import settings
 from .exceptions import UnsupportedTaskTypeError
 
@@ -78,6 +82,8 @@ class TabularAutoML:
     def get_best_model(self, config=None):
         if config is None:
             config = {}
+        else:
+            config = copy.deepcopy(config)
         sampling__config = config.get("sampling", {})
         setup__config = config.get("setup", {})
         compare_models__config = config.get("compare_models", {})
@@ -94,7 +100,7 @@ class TabularAutoML:
         if setup__config.get("target") is None:
             setup__config["target"] = self.target_col
         setup = self.setup(**setup__config)
-        print(setup)
+        display(setup)
 
         # run the experiment
         best_model = self.compare_models(**compare_models__config)
