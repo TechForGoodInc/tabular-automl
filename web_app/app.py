@@ -5,7 +5,7 @@ from tabular_automl.settings import (
 )
 from tabular_automl import TabularAutoML, TabularData
 
-from .settings import APP_NAME
+from settings import APP_NAME
 
 # app display
 st.title(APP_NAME)
