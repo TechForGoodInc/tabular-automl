@@ -36,37 +36,37 @@ class TabularAutoMLTestCase(unittest.TestCase):
                 task_type="unknown"
             )
 
-        automl = TabularAutoML(
+        pipeline = TabularAutoML(
             self.train_data,
             target_col=self.target_col,
             task_type=self.task_type
         )
         self.assertEqual(
-            automl.pycaret_module.__name__, "pycaret.classification"
+            pipeline.pycaret_module.__name__, "pycaret.classification"
         )
 
     def test_get_sample(self):
-        automl = TabularAutoML(
+        pipeline = TabularAutoML(
             self.train_data,
             target_col=self.target_col,
             task_type=self.task_type,
         )
 
         sample_frac = self.get_sample_frac(
-            self.train_data, sample=automl.get_sample()
+            self.train_data, sample=pipeline.get_sample()
         )
         self.assertAlmostEqual(sample_frac, 0.5)
 
         sample_frac = self.get_sample_frac(
-            self.train_data, sample=automl.get_sample(sample_frac=0.1)
+            self.train_data, sample=pipeline.get_sample(sample_frac=0.1)
         )
         self.assertAlmostEqual(sample_frac, 0.1)
 
     def test_get_best_model(self):
-        automl = TabularAutoML(
+        pipeline = TabularAutoML(
             self.train_data,
             target_col=self.target_col,
             task_type=self.task_type,
         )
         config = {"setup": dict(silent=True)}
-        automl.get_best_model(config)
+        pipeline.get_best_model(config)

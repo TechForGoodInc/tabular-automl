@@ -1,21 +1,23 @@
 import streamlit as st
 
-from tabular_automl import settings as automl_settings
+from tabular_automl.settings import (
+    FILE_READERS, SUPPORTED_TASK_TYPES, MODEL_OUTPUTS_DIR
+)
 from tabular_automl import TabularAutoML, TabularData
 
-import settings as app_settings
+from .settings import APP_NAME
 
 # app display
-st.title(app_settings.APP_NAME)
+st.title(APP_NAME)
 
 task_type = st.radio(
-    "Choose a task type", options=automl_settings.SUPPORTED_TASK_TYPES
+    "Choose a task type", options=SUPPORTED_TASK_TYPES
 )
 
 def get_dataset(subset="training"):
     # data upload
     data_buffer = st.file_uploader(
-        f"Upload {subset} data", type=automl_settings.FILE_READERS.keys()
+        f"Upload {subset} data", type=FILE_READERS.keys()
     )
     if data_buffer is not None:
         return TabularData(data_buffer)
@@ -39,17 +41,17 @@ def get_data():
             return train_data.data, test_data.data    
 
 @st.cache
-def create_experiment(train_data, test_data=None):
-    automl = TabularAutoML(
+def create_pipeline(train_data, test_data=None):
+    pipeline = TabularAutoML(
         train_data,
         test_data=test_data,
         target_col=target_col,
         task_type=task_type
     )
-    return automl
+    return pipeline
 
 def get_model_outputs_dir():
-    dir = automl_settings.MODEL_OUTPUTS_DIR
+    dir = MODEL_OUTPUTS_DIR
     if not dir.exists():
         dir.mkdir(parents=True)
     return dir
@@ -61,7 +63,7 @@ if data is not None:
         "Select the target column", train_data.columns
     )
     with st.spinner(text="Setting up"):
-        automl = create_experiment(train_data, test_data=test_data)
+        pipeline = create_pipeline(train_data, test_data=test_data)
         model = None
         config = {
             # "sampling": dict(sample_frac=round(1/3, 2)),
@@ -69,9 +71,9 @@ if data is not None:
         }
 
     if st.button("Start training"):        
-        cached_get_best_model = st.cache(automl.get_best_model)
-        cached_tune_model = st.cache(automl.tune_model)
-        cached_finalize_model = st.cache(automl.finalize_model)
+        cached_get_best_model = st.cache(pipeline.get_best_model)
+        cached_tune_model = st.cache(pipeline.tune_model)
+        cached_finalize_model = st.cache(pipeline.finalize_model)
         with st.spinner(text="Training in progress ..."):
             best_model = cached_get_best_model(config)
             tuned_model = cached_tune_model(estimator=best_model)
@@ -81,7 +83,7 @@ if data is not None:
 
     if model is not None:
         model_outputs_dir = get_model_outputs_dir()
-        predictions = automl.predict_model(estimator=model, data=test_data)
+        predictions = pipeline.predict_model(estimator=model, data=test_data)
         st.write("Sample predictions", predictions)
         predictions_file = model_outputs_dir / "predictions.csv"
         predictions.to_csv(predictions_file)
