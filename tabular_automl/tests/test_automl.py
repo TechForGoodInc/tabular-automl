@@ -21,7 +21,7 @@ class TabularAutoMLTestCase(unittest.TestCase):
 
     @staticmethod
     def get_sample_frac(data, sample):
-        return sample.shape[0] / data.shape[0]
+        return round(sample.shape[0] / data.shape[0], 2)
 
     def test_get_module(self):
         # None task type
@@ -55,7 +55,12 @@ class TabularAutoMLTestCase(unittest.TestCase):
         sample_frac = self.get_sample_frac(
             self.train_data, sample=automl.get_sample()
         )
-        self.assertGreaterEqual(sample_frac, 0.5)
+        self.assertAlmostEqual(sample_frac, 0.5)
+
+        sample_frac = self.get_sample_frac(
+            self.train_data, sample=automl.get_sample(sample_frac=0.1)
+        )
+        self.assertAlmostEqual(sample_frac, 0.1)
 
     def test_get_best_model(self):
         automl = TabularAutoML(
