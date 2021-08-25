@@ -2,8 +2,8 @@ import copy
 
 from IPython.display import display
 
-from .settings import LARGE_DATASET_ROWS, SUPPORTED_TASK_TYPES
 from .exceptions import UnsupportedTaskTypeError
+from .settings import LARGE_DATASET_ROWS, SUPPORTED_TASK_TYPES
 
 
 class TabularAutoML:
@@ -11,6 +11,7 @@ class TabularAutoML:
     Wrapper around PyCaret for machine learning tasks that
     use tabular data
     """
+
     def __init__(self, train_data, test_data=None, target_col=None, task_type=None):
         self.train_data = train_data
         self.test_data = test_data

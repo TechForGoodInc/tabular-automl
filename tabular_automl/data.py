@@ -8,6 +8,7 @@ class TabularData:
     """
     Wrapper around pandas functions for tabular data IO
     """
+
     def __init__(self, filepath_or_buffer, index_col=None):
         self.filepath_or_buffer = filepath_or_buffer
         self.data = self.get_data()
@@ -19,10 +20,10 @@ class TabularData:
             return Path(self.filepath_or_buffer).suffix
         except TypeError:
             return Path(self.filepath_or_buffer.name).suffix
-       
+
     def get_data(self):
         try:
-            ext =  self._get_filepath_or_buffer_extension()
+            ext = self._get_filepath_or_buffer_extension()
             read_func = settings.FILE_READERS.get(ext)
             return read_func(self.filepath_or_buffer)
         except TypeError:

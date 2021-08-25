@@ -1,6 +1,6 @@
 import unittest
 
-from tabular_automl import settings, TabularAutoML, TabularData
+from tabular_automl import TabularAutoML, TabularData, settings
 from tabular_automl.exceptions import UnsupportedTaskTypeError
 
 
@@ -14,9 +14,7 @@ class TabularAutoMLTestCase(unittest.TestCase):
         cls.task_type = "classification"
 
     def setUp(self):
-        train_dataset = TabularData(
-            self.train_data_path, index_col=self.index_col
-        )
+        train_dataset = TabularData(self.train_data_path, index_col=self.index_col)
         self.train_data = train_dataset.data
 
     @staticmethod
@@ -31,19 +29,13 @@ class TabularAutoMLTestCase(unittest.TestCase):
         # unsupported task type
         with self.assertRaises(UnsupportedTaskTypeError):
             TabularAutoML(
-                self.train_data,
-                target_col=self.target_col,
-                task_type="unknown"
+                self.train_data, target_col=self.target_col, task_type="unknown"
             )
 
         pipeline = TabularAutoML(
-            self.train_data,
-            target_col=self.target_col,
-            task_type=self.task_type
+            self.train_data, target_col=self.target_col, task_type=self.task_type
         )
-        self.assertEqual(
-            pipeline.pycaret_module.__name__, "pycaret.classification"
-        )
+        self.assertEqual(pipeline.pycaret_module.__name__, "pycaret.classification")
 
     def test_get_sample(self):
         pipeline = TabularAutoML(

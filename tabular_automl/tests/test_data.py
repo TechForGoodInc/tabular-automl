@@ -3,7 +3,7 @@ import unittest
 
 import pandas as pd
 
-from tabular_automl import settings, TabularData
+from tabular_automl import TabularData, settings
 from tabular_automl.exceptions import UnsupportedFileFormatError
 
 
@@ -14,7 +14,7 @@ class TabularDataTestCase(unittest.TestCase):
         cls.data_path = cls.data_dir / "train.csv"
         cls.index_col = "PassengerId"
 
-    def setUp(self):        
+    def setUp(self):
         self.data_buffer = io.open(self.data_path, "rb")
 
     def tearDown(self):
