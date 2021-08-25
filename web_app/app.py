@@ -37,8 +37,7 @@ def get_data():
 
         if test_data is None:
             return train_data.data, None
-        else:
-            return train_data.data, test_data.data    
+        return train_data.data, test_data.data    
 
 @st.cache
 def create_pipeline(train_data, test_data=None):
