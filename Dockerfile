@@ -3,8 +3,8 @@ FROM python:3.8
 
 # Metadata
 LABEL "maintainer" "Harison Gachuru <harisongachuru@gmail.com>"
-LABEL "repository" "https://github.com/TechForGoodInc/tabular-automl"
-LABEL "homepage" "https://github.com/TechForGoodInc/tabular-automl"
+LABEL "repository" "https://github.com/harisonmg/tabular-automl"
+LABEL "homepage" "https://github.com/harisonmg/tabular-automl"
 
 # Update apt repositories
 # RUN apt-get update && apt-get install -y libgomp1
