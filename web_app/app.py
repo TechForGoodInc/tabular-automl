@@ -19,35 +19,34 @@ def get_dataset(subset="training"):
 
 
 def get_data():
-    train_data = get_dataset()
-    test_data = get_dataset(subset="testing")
+    train_dataset = get_dataset()
+    test_dataset = get_dataset(subset="testing")
 
-    if train_data is not None:
+    if train_dataset is not None:
         with st.expander("Does the data have an index column?"):
-            index_col = st.selectbox("Select the index column", train_data.data.columns)
-            train_data.set_index(index_col)
-            if test_data is not None:
-                test_data.set_index(index_col)
+            index_col = st.selectbox("Select the index column", train_dataset.data.columns)
+            train_dataset.set_index(index_col)
+            if test_dataset is not None:
+                test_dataset.set_index(index_col)
 
-        if test_data is None:
-            return train_data.data, None
-        return train_data.data, test_data.data
+        if test_dataset is None:
+            return train_dataset.data, None
+        return train_dataset.data, test_dataset.data
     return None
 
 
 @st.cache
-def create_pipeline(train_data, test_data=None):
-    pipeline = TabularAutoML(
+def create_pipeline():
+    return TabularAutoML(
         train_data, test_data=test_data, target_col=target_col, task_type=task_type
     )
-    return pipeline
 
 data = get_data()
 if data is not None:
     train_data, test_data = data
     target_col = st.selectbox("Select the target column", train_data.columns)
     with st.spinner(text="Setting up"):
-        pipeline = create_pipeline(train_data, test_data=test_data)
+        pipeline = create_pipeline()
         model = None
         config = {
             # "sampling": dict(sample_frac=round(1/3, 2)),
