@@ -24,7 +24,9 @@ def get_data():
 
     if train_dataset is not None:
         with st.expander("Does the data have an index column?"):
-            index_col = st.selectbox("Select the index column", train_dataset.data.columns)
+            index_col = st.selectbox(
+                "Select the index column", train_dataset.data.columns
+            )
             train_dataset.set_index(index_col)
             if test_dataset is not None:
                 test_dataset.set_index(index_col)
@@ -40,6 +42,7 @@ def create_pipeline():
     return TabularAutoML(
         train_data, test_data=test_data, target_col=target_col, task_type=task_type
     )
+
 
 data = get_data()
 if data is not None:
