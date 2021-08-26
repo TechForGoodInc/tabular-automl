@@ -24,4 +24,4 @@ RUN pip install -r requirements.txt
 COPY . /code
 
 # Run command
-CMD ["python" "-m" "streamlit" "run" "web_app/app.py"]
+CMD ["python", "-m", "streamlit", "run", "web_app/app.py"]
