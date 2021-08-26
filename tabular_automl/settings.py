@@ -1,6 +1,4 @@
-"""
-Settings for the tabular_automl package
-"""
+"""Settings for the tabular_automl package"""
 
 from pathlib import Path
 

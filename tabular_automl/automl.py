@@ -7,9 +7,8 @@ from .settings import LARGE_DATASET_ROWS, SUPPORTED_TASK_TYPES
 
 
 class TabularAutoML:
-    """
-    Wrapper around PyCaret for machine learning tasks that
-    use tabular data
+    """Wrapper around PyCaret for machine learning tasks
+    that use tabular data
     """
 
     def __init__(self, train_data, test_data=None, target_col=None, task_type=None):

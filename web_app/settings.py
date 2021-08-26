@@ -1,5 +1,3 @@
-"""
-Settings for the streamlit app
-"""
+"""Settings for the streamlit app"""
 
 APP_NAME = "Tabular AutoML"

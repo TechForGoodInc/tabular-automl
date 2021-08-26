@@ -5,9 +5,7 @@ from .exceptions import UnsupportedFileFormatError
 
 
 class TabularData:
-    """
-    Wrapper around pandas functions for tabular data IO
-    """
+    """Wrapper around pandas functions for manipulating tabular data"""
 
     def __init__(self, filepath_or_buffer, index_col=None):
         self.filepath_or_buffer = filepath_or_buffer
