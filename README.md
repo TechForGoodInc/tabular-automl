@@ -19,8 +19,8 @@ A low code, low-cost AutoML solution for tabular data.
     $ docker pull ghcr.io/harisonmg/tabular-automl:latest
     ```
 1. Run the container \
-    `$ docker run -dp 8501:8501 tabular-automl:latest`
-1. Visit [localhost:8501](http://localhost:8501) in your browser
+    `$ docker run -dp 8000:8000 tabular-automl:latest`
+1. Visit [localhost:8000](http://localhost:8000) in your browser
 1. Select a task type and upload your data
 1. Wait for a few minutes and you'll get a trained model as well as sample predictions
 
