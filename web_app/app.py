@@ -2,11 +2,7 @@ import streamlit as st
 from settings import APP_NAME
 
 from tabular_automl import TabularAutoML, TabularData
-from tabular_automl.settings import (
-    FILE_READERS,
-    MODEL_OUTPUTS_DIR,
-    SUPPORTED_TASK_TYPES,
-)
+from tabular_automl.settings import FILE_READERS, SUPPORTED_TASK_TYPES
 
 # app display
 st.title(APP_NAME)
@@ -44,14 +40,6 @@ def create_pipeline(train_data, test_data=None):
     )
     return pipeline
 
-
-def get_model_outputs_dir():
-    dir = MODEL_OUTPUTS_DIR
-    if not dir.exists():
-        dir.mkdir(parents=True)
-    return dir
-
-
 data = get_data()
 if data is not None:
     train_data, test_data = data
@@ -76,8 +64,5 @@ if data is not None:
             st.success("Training successfully completed!")
 
     if model is not None:
-        model_outputs_dir = get_model_outputs_dir()
         predictions = pipeline.predict_model(estimator=model, data=test_data)
         st.write("Sample predictions", predictions)
-        predictions_file = model_outputs_dir / "predictions.csv"
-        predictions.to_csv(predictions_file)
