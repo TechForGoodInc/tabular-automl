@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 pycaret = "*"
+streamlit = "*"
+shap = "*"
 
 [dev-packages]
 coverage = "*"
