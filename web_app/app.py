@@ -15,6 +15,7 @@ def get_dataset(subset="training"):
     data_buffer = st.file_uploader(f"Upload {subset} data", type=FILE_READERS.keys())
     if data_buffer is not None:
         return TabularData(data_buffer)
+    return None
 
 
 def get_data():
@@ -31,6 +32,7 @@ def get_data():
         if test_data is None:
             return train_data.data, None
         return train_data.data, test_data.data
+    return None
 
 
 @st.cache
