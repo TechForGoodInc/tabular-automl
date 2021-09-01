@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from . import settings
+from .settings import FILE_READERS
 from .exceptions import UnsupportedFileFormatError
 
 
@@ -15,14 +15,19 @@ class TabularData:
 
     def _get_filepath_or_buffer_extension(self):
         try:
+            # for a `Path`-like object
             return Path(self.filepath_or_buffer).suffix
         except TypeError:
+            # for a buffer
             return Path(self.filepath_or_buffer.name).suffix
 
     def get_data(self):
         try:
             ext = self._get_filepath_or_buffer_extension()
-            read_func = settings.FILE_READERS.get(ext)
+            read_func = FILE_READERS.get(ext)
+            # if there isn't a matching file reader, `read_func`
+            # will be `None`, resulting in a type error when you
+            # try to call it
             return read_func(self.filepath_or_buffer)
         except TypeError:
             raise UnsupportedFileFormatError
