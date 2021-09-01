@@ -93,8 +93,8 @@ class TabularAutoML:
 
         # get a sample if there is a sampling config
         # or the dataset is large
-        large_dataset = self.train_data.shape[0] / LARGE_DATASET_ROWS
-        if bool(sampling__config) or large_dataset:
+        proportion = self.train_data.shape[0] / LARGE_DATASET_ROWS
+        if bool(sampling__config) or bool(int(proportion)):
             data = self.get_sample(**sampling__config)
         else:
             data = self.train_data
