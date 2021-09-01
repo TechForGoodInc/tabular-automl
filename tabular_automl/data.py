@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from .settings import FILE_READERS
 from .exceptions import UnsupportedFileFormatError
+from .settings import FILE_READERS
 
 
 class TabularData:
