@@ -145,7 +145,7 @@ smart-open==5.2.0
 smmap==4.0.0
 spacy==2.3.7
 SQLAlchemy==1.4.23
-sqlparse==0.4.1
+sqlparse==0.4.2
 srsly==1.0.5
 statsmodels==0.12.2
 streamlit==0.87.0
