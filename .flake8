@@ -1,0 +1,5 @@
+[flake8]
+exclude =
+	__init__.py,
+    dist,
+max-line-length = 88
