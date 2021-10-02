@@ -14,5 +14,8 @@ coveralls = "*"
 build = "*"
 twine = "*"
 kaggle = "*"
+black = "*"
+isort = "*"
+flake8 = "*"
 
 [requires]
