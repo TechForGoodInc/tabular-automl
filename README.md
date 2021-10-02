@@ -1,7 +1,7 @@
 # tabular-automl
 A low code, low-cost AutoML solution for tabular data.
 
-[![Tests](https://github.com/harisonmg/tabular-automl/actions/workflows/ci.yml/badge.svg)](https://github.com/harisonmg/tabular-automl/actions/workflows/ci.yml)
+[![Tests](https://github.com/harisonmg/tabular-automl/actions/workflows/test.yml/badge.svg)](https://github.com/harisonmg/tabular-automl/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/harisonmg/tabular-automl/badge.svg?branch=main)](https://coveralls.io/github/harisonmg/tabular-automl?branch=main)
 
 ## Installation and usage
