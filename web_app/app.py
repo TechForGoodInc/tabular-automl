@@ -10,7 +10,7 @@ st.title(APP_NAME)
 task_type = st.radio("Choose a task type", options=SUPPORTED_TASK_TYPES)
 
 
-def get_dataset(subset="training"):
+def _get_dataset(subset="training"):
     # data upload
     data_buffer = st.file_uploader(f"Upload {subset} data", type=FILE_READERS.keys())
     if data_buffer is not None:
@@ -19,8 +19,8 @@ def get_dataset(subset="training"):
 
 
 def get_data():
-    train_dataset = get_dataset()
-    test_dataset = get_dataset(subset="testing")
+    train_dataset = _get_dataset()
+    test_dataset = _get_dataset(subset="testing")
 
     if train_dataset is not None:
         with st.expander("Does the data have an index column?"):
@@ -37,42 +37,50 @@ def get_data():
     return None
 
 
-@st.cache
-def create_pipeline():
-    return TabularAutoML(
-        train_data, test_data=test_data, target_col=target_col, task_type=task_type
-    )
-
-
-data = get_data()
-if data is not None:
-    train_data, test_data = data
-    target_col = st.selectbox("Select the target column", train_data.columns)
-    with st.spinner(text="Setting up"):
-        pipeline = create_pipeline()
-        model = None
+def train_model(pipeline):
+    with st.spinner(text="Training in progress ..."):
         config = {
             # "sampling": dict(sample_frac=round(1/3, 2)),
             "setup": dict(silent=True),
         }
+        best_model = st.cache(pipeline.get_best_model)(config)
+        tuned_model = st.cache(pipeline.tune_model)(estimator=best_model)
+        final_model = st.cache(pipeline.finalize_model)(estimator=tuned_model)
+        model = final_model
+        st.success("Training successfully completed!")
+    return model
 
-    if st.button("Start training"):
-        cached_get_best_model = st.cache(pipeline.get_best_model)
-        cached_tune_model = st.cache(pipeline.tune_model)
-        cached_finalize_model = st.cache(pipeline.finalize_model)
-        with st.spinner(text="Training in progress ..."):
-            best_model = cached_get_best_model(config)
-            tuned_model = cached_tune_model(estimator=best_model)
-            final_model = cached_finalize_model(estimator=tuned_model)
-            model = final_model
-            st.success("Training successfully completed!")
 
-    if model is not None:
-        predictions = pipeline.predict_model(estimator=model, data=test_data)
-        st.write("Sample predictions", predictions.sample(10))
-        st.download_button(
-            "Download predictions",
-            data=predictions.to_csv(),
-            file_name="predictions.csv",
-            mime="text/csv",
-        )
+def main():
+    data = get_data()
+    if data is not None:
+        train_data, test_data = data
+        target_col = st.selectbox("Select the target column", train_data.columns)
+        with st.spinner(text="Setting up"):
+            pipeline = st.cache(TabularAutoML)(
+                train_data,
+                test_data=test_data,
+                target_col=target_col,
+                task_type=task_type,
+            )
+
+        if st.button("Start training"):
+            # model
+            model = train_model(pipeline)
+
+            # predictions
+            predictions = pipeline.predict_model(estimator=model, data=test_data)
+            st.subheader("Sample predictions")
+            st.write(predictions.sample(10))
+
+            # downloads
+            st.subheader("Downloads")
+            st.download_button(
+                "Download predictions",
+                data=predictions.to_csv(),
+                file_name="predictions.csv",
+                mime="text/csv",
+            )
+
+
+main()
