@@ -69,4 +69,10 @@ if data is not None:
 
     if model is not None:
         predictions = pipeline.predict_model(estimator=model, data=test_data)
-        st.write("Sample predictions", predictions)
+        st.write("Sample predictions", predictions.sample(10))
+        st.download_button(
+            "Download predictions",
+            data=predictions.to_csv(),
+            file_name="predictions.csv",
+            mime="text/csv",
+        )
