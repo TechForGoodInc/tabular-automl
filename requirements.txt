@@ -1,3 +1,3 @@
 pycaret==2.3.4
 shap==0.39.0
-streamlit==0.89.0
+streamlit==1.0.0
